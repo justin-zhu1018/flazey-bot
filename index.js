@@ -1,6 +1,7 @@
 const Discord = require("discord.js");
 const client = new Discord.Client();
 const config = require("./config.json");
+const aws = require("aws-sdk");
 
 client.on("ready", () => {
   console.log("Connected as " + client.user.tag);
@@ -36,4 +37,4 @@ function processCommand(receivedMessage) {
   //   receivedMessage.channel.send("Yup", receivedMessage.content);
 }
 
-client.login(process.env.token);
+client.login(process.env.BOT_TOKEN);
