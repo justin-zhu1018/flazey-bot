@@ -1,6 +1,8 @@
 const Discord = require("discord.js");
 const client = new Discord.Client();
-// const config = require("./config.json");
+const config = require("./config.json");
+const Client = require("clash-royale-api");
+const clash = new Client(config.CR_API_TOKEN);
 
 client.on("ready", () => {
   console.log("Connected as " + client.user.tag);
@@ -30,17 +32,27 @@ client.on("message", (receivedMessage) => {
 
 function processCommand(receivedMessage) {
   let command = receivedMessage.content.substr(1);
-  let send = receivedMessage.channel.send();
+  const channel = receivedMessage.channel;
   if (command === "commands") {
-    receivedMessage.channel.send(
-      "Here's a list of commands: !help, !clan, !player"
-    );
+    channel.send("Here's a list of commands: !help, !clan, !player");
   } else if (command === "help") {
-    receivedMessage.channel.send("You don't need help shhh...");
+    channel.send("You don't need help shhh...");
+  } else if (command === "clan") {
+    channel.send("Our clan: ");
+    processClan(channel);
   } else if (command === "player") {
-    send("yes");
+    channel.send("yes");
+  } else {
+    channel.send(
+      "Error: No command specified. For a list of commands, type !commands"
+    );
   }
 }
 
-// client.login(process.env.BOT_TOKEN).catch((err) => console.log(err));
-client.login(process.env.test);
+async function processClan(channel) {
+  channel.send("Works!");
+  const clan = await clash.clan("#YQYYGC02");
+}
+
+// client.login(process.env.test);
+client.login(config.token);
