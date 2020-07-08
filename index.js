@@ -36,4 +36,4 @@ function processCommand(receivedMessage) {
   //   receivedMessage.channel.send("Yup", receivedMessage.content);
 }
 
-client.login(config.token);
+client.login(process.env.token);
