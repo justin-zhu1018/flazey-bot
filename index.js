@@ -3,7 +3,7 @@ const client = new Discord.Client();
 // const config = require("./config.json");
 const Client = require("clash-royale-api");
 // const clash = new Client(config.CR_API_TOKEN);
-const clash = new Client(process.env.CR_API_TOKEN);
+const clash = new Client();
 
 client.on("ready", () => {
   console.log("Connected as " + client.user.tag);
@@ -57,5 +57,5 @@ async function processClan(channel) {
   console.log("Clash data? ", clan);
 }
 
-client.login(process.env.test);
+client.login(process.env.BOT_TOKEN);
 // client.login(config.token);
