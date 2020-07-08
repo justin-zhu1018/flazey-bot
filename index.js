@@ -1,8 +1,9 @@
 const Discord = require("discord.js");
 const client = new Discord.Client();
-const config = require("./config.json");
+// const config = require("./config.json");
 const Client = require("clash-royale-api");
-const clash = new Client(config.CR_API_TOKEN);
+// const clash = new Client(config.CR_API_TOKEN);
+const clash = new Client(process.env.CR_API_TOKEN);
 
 client.on("ready", () => {
   console.log("Connected as " + client.user.tag);
@@ -54,5 +55,5 @@ async function processClan(channel) {
   const clan = await clash.clan("#YQYYGC02");
 }
 
-// client.login(process.env.test);
-client.login(config.token);
+client.login(process.env.test);
+// client.login(config.token);
