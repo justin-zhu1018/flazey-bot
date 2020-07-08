@@ -4,7 +4,7 @@ const client = new Discord.Client();
 
 client.on("ready", () => {
   console.log("Connected as " + client.user.tag);
-  client.user.setActivity("with Javascript");
+  client.user.setActivity("Clash Royale");
 
   client.guilds.cache.forEach((guild) => {
     console.log(guild.name);
@@ -30,10 +30,16 @@ client.on("message", (receivedMessage) => {
 
 function processCommand(receivedMessage) {
   let command = receivedMessage.content.substr(1);
-  if (command === "help") {
-    receivedMessage.channel.send("No you're not helping");
+  let send = receivedMessage.channel.send();
+  if (command === "commands") {
+    receivedMessage.channel.send(
+      "Here's a list of commands: !help, !clan, !player"
+    );
+  } else if (command === "help") {
+    receivedMessage.channel.send("You don't need help shhh...");
+  } else if (command === "player") {
+    send("yes");
   }
-  //   receivedMessage.channel.send("Yup", receivedMessage.content);
 }
 
 // client.login(process.env.BOT_TOKEN).catch((err) => console.log(err));
