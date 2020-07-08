@@ -53,6 +53,8 @@ function processCommand(receivedMessage) {
 async function processClan(channel) {
   channel.send("Works!");
   const clan = await clash.clan("#YQYYGC02");
+  console.log("test");
+  console.log("Clash data? ", clan);
 }
 
 client.login(process.env.test);
