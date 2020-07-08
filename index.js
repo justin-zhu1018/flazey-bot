@@ -1,5 +1,6 @@
 const Discord = require("discord.js");
 const client = new Discord.Client();
+const config = require("./config.json");
 
 client.on("ready", () => {
   console.log("Connected as " + client.user.tag);
@@ -7,15 +8,15 @@ client.on("ready", () => {
 
   client.guilds.cache.forEach((guild) => {
     console.log(guild.name);
-    // guild.channels.cache.forEach((channel) => {
-    //   console.log(` - ${channel.name} ${channel.type} ${channel.id}`);
-    // });
+    guild.channels.cache.forEach((channel) => {
+      console.log(` - ${channel.name} ${channel.type} ${channel.id}`);
+    });
   });
   let generalChannel = client.channels.cache.get("730511965092446361");
-  const attachment = new Discord.MessageAttachment(
-    "https://clashroyale.com/uploaded-images-blog/CR_facebook_share_02_180403_175322.jpg?mtime=20180403175322"
-  );
-  generalChannel.send("Hello World!", attachment);
+  //   const attachment = new Discord.MessageAttachment(
+  //     "https://clashroyale.com/uploaded-images-blog/CR_facebook_share_02_180403_175322.jpg?mtime=20180403175322"
+  //   );
+  generalChannel.send("I am here! For a list of the commands, type !commands");
 });
 
 client.on("message", (receivedMessage) => {
@@ -35,4 +36,4 @@ function processCommand(receivedMessage) {
   //   receivedMessage.channel.send("Yup", receivedMessage.content);
 }
 
-client.login("NzA4ODA1NTQ4MDM1ODAxMjY5.XwYkvA.DgEG4CMdqTzgYZoPWjKIUDllCOE");
+client.login(config.token);
