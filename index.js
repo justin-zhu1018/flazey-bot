@@ -1,10 +1,10 @@
 const Discord = require("discord.js");
 const client = new Discord.Client();
 const Client = require("clash-royale-api");
-const clash = new Client(process.env.Test2);
-console.log("Test1 ", process.env.Test1);
-console.log("Test2 ", process.env.Test2);
-console.log("Test3 ", process.env.Test3);
+const clash = new Client(process.env.Test3);
+// console.log("Test1 ", process.env.Test1);
+// console.log("Test2 ", process.env.Test2);
+// console.log("Test3 ", process.env.Test3);
 
 //Used in testing
 // const config = require("./config.json");
