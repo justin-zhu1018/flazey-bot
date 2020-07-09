@@ -61,7 +61,7 @@ async function processClan(channel) {
   const clan = await clash.clan("#YQYYGC02");
   console.log("clan: ", clan.data.name, clan.data.tag, clan.data.description);
   channel.send(
-    "Our clan: " +
+    "Our clan: \n" +
       clan.data.name +
       ", " +
       clan.data.tag +
