@@ -1,14 +1,14 @@
 const Discord = require("discord.js");
 const client = new Discord.Client();
 const Client = require("clash-royale-api");
-const clash = new Client(process.env.Test);
+// const clash = new Client(process.env.Test);
 // console.log("Test1 ", process.env.Test1);
 // console.log("Test2 ", process.env.Test2);
 // console.log("Test3 ", process.env.Test3);
 
 //Used in testing
-// const config = require("./config.json");
-// const clash = new Client(config.testToken);
+const config = require("./config.json");
+const clash = new Client(config.testToken);
 
 // const clash = new Client(config.tokenCR);
 // const fetch = require("node-fetch");
@@ -23,11 +23,13 @@ client.on("ready", () => {
       console.log(` - ${channel.name} ${channel.type} ${channel.id}`);
     });
   });
-  let generalChannel = client.channels.cache.get("730511965092446361");
+  let generalChannel = client.channels.cache.get("730295406189215747");
+  // let botChannel = client.channels.cache.get("730528385385889834");
   //   const attachment = new Discord.MessageAttachment(
   //     "https://clashroyale.com/uploaded-images-blog/CR_facebook_share_02_180403_175322.jpg?mtime=20180403175322"
   //   );
-  generalChannel.send("I am here! For a list of the commands, type !commands");
+
+  // generalChannel.send("I am here! For a list of the commands, type !commands");
 });
 
 client.on("message", (receivedMessage) => {
@@ -40,16 +42,21 @@ client.on("message", (receivedMessage) => {
 });
 
 function processCommand(receivedMessage) {
-  let command = receivedMessage.content.substr(1);
+  let fullCommand = receivedMessage.content.substr(1);
+  let splitCommand = command.split(" ");
+  let primaryCommand = splitCommand[0];
+  let secondaryCommand = splitCommand[1];
+
   const channel = receivedMessage.channel;
-  if (command === "commands") {
+
+  if (primaryCommand === "commands") {
     channel.send("Here's a list of commands: !help, !clan, !player");
-  } else if (command === "help") {
-    channel.send("You don't need help shhhssssss...");
-  } else if (command === "clan") {
+  } else if (primaryCommand === "help") {
+    channel.send("You don't need help shhh...");
+  } else if (primaryCommand === "clan") {
     processClan(channel);
-  } else if (command === "player") {
-    channel.send("yes");
+  } else if (primaryCommand === "player") {
+    processPlayer(secondaryCommand, channel);
   } else {
     channel.send(
       "Error: No command specified. For a list of commands, type !commands"
@@ -72,6 +79,10 @@ async function processClan(channel) {
   );
 }
 
+async function processPlayer(secondaryCommand, channel) {
+  const player = await clash.player(secondaryCommand);
+  channel.send("Player: ", player);
+}
 // async function fetchData() {
 //   const response = await fetch(
 //     "https://finnhub.io/api/v1/quote?symbol=MSFT&token=br906t7rh5ral083k820"
@@ -102,5 +113,5 @@ async function processClan(channel) {
 //   }
 // }
 
-client.login(process.env.BOT_TOKEN);
-// client.login(config.token);
+// client.login(process.env.BOT_TOKEN);
+client.login(config.token);
