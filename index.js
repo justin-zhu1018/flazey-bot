@@ -1,18 +1,13 @@
 const Discord = require("discord.js");
 const client = new Discord.Client();
 const Client = require("clash-royale-api");
-// const clash = new Client(process.env.Test);
-// console.log("Test1 ", process.env.Test1);
-// console.log("Test2 ", process.env.Test2);
-// console.log("Test3 ", process.env.Test3);
-// const fetch = require("node-fetch");
 
 //Used in testing
-// const config = require("./config.json");
-// const clash = new Client(config.testToken);
+const config = require("./config.json");
+const clash = new Client(config.testToken);
 
 //Used for Heroku
-const clash = new Client(process.env.CR_API_TOKEN);
+// const clash = new Client(process.env.CR_API_TOKEN);
 
 client.on("ready", () => {
   console.log("Connected as " + client.user.tag);
@@ -187,5 +182,5 @@ async function processPlayer(secondaryCommand, channel) {
 //   }
 // }
 
-client.login(process.env.BOT_TOKEN);
-// client.login(config.token);
+// client.login(process.env.BOT_TOKEN);
+client.login(config.token);
