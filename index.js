@@ -1,10 +1,12 @@
-const fetch = require("node-fetch");
 const Discord = require("discord.js");
 const client = new Discord.Client();
-const config = require("./config.json");
 const Client = require("clash-royale-api");
-// const clash = new Client(config.CR_API_TOKEN);
-// const clash = new Client();
+const clash = new Client();
+
+//Used in testing
+// const config = require("./config.json");
+// const clash = new Client(config.tokenCR);
+// const fetch = require("node-fetch");
 
 client.on("ready", () => {
   console.log("Connected as " + client.user.tag);
@@ -40,7 +42,6 @@ function processCommand(receivedMessage) {
   } else if (command === "help") {
     channel.send("You don't need help shhhssssss...");
   } else if (command === "clan") {
-    channel.send("Our clan: ");
     processClan(channel);
   } else if (command === "player") {
     channel.send("yes");
@@ -52,20 +53,49 @@ function processCommand(receivedMessage) {
 }
 
 async function processClan(channel) {
-  channel.send("Works!");
-  // const clan = await clash.clan("#YQYYGC02");
-  // console.log("test");
-  // console.log("Clash data? ", clan);
-  // fetch(
-  //   "https://finnhub.io/api/v1/quote?symbol=MSFT&token=br906t7rh5ral083k820"
-  // )
-  //   .then((response) => {
-  //     return response.json();
-  //   })
-  //   .then((response) => {
-  //     console.log("response: ", response);
-  //   });
+  // const res = await fetchData();
+  // const res = await fetchCR();
+  const clan = await clash.clan("#YQYYGC02");
+  console.log("clan: ", clan.data.name, clan.data.tag, clan.data.description);
+  channel.send(
+    "Our clan: " +
+      clan.data.name +
+      ", " +
+      clan.data.tag +
+      ", " +
+      clan.data.description
+  );
 }
 
-// client.login(process.env.BOT_TOKEN);
-client.login(config.token);
+// async function fetchData() {
+//   const response = await fetch(
+//     "https://finnhub.io/api/v1/quote?symbol=MSFT&token=br906t7rh5ral083k820"
+//   );
+//   const json = await response.json();
+//   // console.log("json: ", json);
+//   return json;
+// }
+
+// async function fetchCR() {
+//   console.log("try fetch start");
+//   try {
+//     const response = await fetch(
+//       "https://api.clashroyale.com/v1/clans/%23YQYYGC02",
+//       {
+//         method: "get",
+//         // url: ``,
+//         // baseURL: 'https://api.clashroyale.com/v1/',
+//         headers: {
+//           Accept: "application/json",
+//           authorization: `Bearer ${config.tokenCR}`,
+//         },
+//       }
+//     );
+//     console.log("response: ", response.body);
+//   } catch (error) {
+//     console.log("error: ");
+//   }
+// }
+
+client.login(process.env.BOT_TOKEN);
+// client.login(config.token);
