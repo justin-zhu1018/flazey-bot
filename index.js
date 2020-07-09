@@ -98,10 +98,14 @@ async function processClan(channel) {
 async function processPlayer(secondaryCommand, channel) {
   if (secondaryCommand === undefined) {
     channel.send("Invalid player tag, try again!");
-  } else if (secondaryCommand.length !== 9) {
+  } else if (secondaryCommand.length <= 9) {
     channel.send("Invalid player tag, try again!");
   } else {
     // const player = await clash.player(secondaryCommand);
+    if (secondaryCommand.substr(0, 1) !== "#") {
+      let hash = "#";
+      let secondaryCommand = hash + secondaryCommand;
+    }
     const player = await clash.player(secondaryCommand.toUpperCase());
     const img = player.data.currentFavouriteCard.iconUrls.medium;
     // const attachment = new Discord.MessageAttachment(img);
