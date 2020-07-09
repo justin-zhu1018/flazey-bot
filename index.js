@@ -3,11 +3,11 @@ const client = new Discord.Client();
 const Client = require("clash-royale-api");
 
 //Used in testing
-const config = require("./config.json");
-const clash = new Client(config.testToken);
+// const config = require("./config.json");
+// const clash = new Client(config.testToken);
 
 //Used for Heroku
-// const clash = new Client(process.env.CR_API_TOKEN);
+const clash = new Client(process.env.CR_API_TOKEN);
 
 client.on("ready", () => {
   console.log("Connected as " + client.user.tag);
@@ -263,7 +263,7 @@ function sortByKey(array, key) {
 // }
 
 //Used in Heroku
-// client.login(process.env.BOT_TOKEN);
+client.login(process.env.BOT_TOKEN);
 
 //Used in testing
-client.login(config.token);
+// client.login(config.token);
