@@ -59,14 +59,18 @@ function processCommand(receivedMessage) {
         "!commands\n" +
         "!help\n" +
         "!clan\n" +
-        "!player [player-tag] ```"
+        "!player [player-tag]\n" +
+        "!cards [player-tag]\n" +
+        "```"
     );
   } else if (primaryCommand === "help") {
-    channel.send("You don't need help shhh...");
+    channel.send("You don't need help shhh... just use **!commands**");
   } else if (primaryCommand === "clan") {
     processClan(channel);
   } else if (primaryCommand === "player") {
     processPlayer(secondaryCommand, channel);
+  } else if (primaryCommand === "cards") {
+    processCards(secondaryCommand, channel);
   } else {
     channel.send(
       "Error: No command specified. For a list of commands, type !commands"
@@ -79,78 +83,154 @@ async function processClan(channel) {
   // const res = await fetchCR();
   const clan = await clash.clan("#YQYYGC02");
   console.log("clan: ", clan.data.name, clan.data.tag, clan.data.description);
-  channel.send(
-    "```Our clan: \n" +
-      clan.data.name +
-      "\nTag: " +
-      clan.data.tag +
-      "\nDescription: " +
-      clan.data.description +
-      "```"
-  );
+  // channel.send(
+  //   "```Our clan: \n" +
+  //     clan.data.name +
+  //     "\nTag: " +
+  //     clan.data.tag +
+  //     "\nDescription: " +
+  //     clan.data.description +
+  //     "```"
+  // );
+
+  const embed = new Discord.MessageEmbed()
+    .setColor("#0099ff")
+    .setTitle(clan.data.name + " " + clan.data.tag)
+    .setURL("https://royaleapi.com/clan/" + clan.data.tag.substr(1))
+    .setAuthor(
+      "Flazey's Clan Thang",
+      "https://i.ytimg.com/vi/CCYCI9FINME/maxresdefault.jpg"
+      // "https://discord.js.org"
+    )
+    .setDescription("Clan Stuff")
+    // .setThumbnail(player.data.currentFavouriteCard.iconUrls.medium)
+    .addFields(
+      { name: "Description", value: clan.data.description, inline: false },
+      { name: "Tag", value: clan.data.tag, inline: false }
+      // { name: "Level 11", value: level11, inline: false },
+      // { name: "Level 10", value: level10, inline: false }
+    )
+    .setTimestamp();
+
+  channel.send(embed);
 }
 
 async function processPlayer(secondaryCommand, channel) {
-  if (secondaryCommand === undefined) {
-    channel.send("Invalid player tag, try again!");
-  }
-  // else if (secondaryCommand.length <= 9) {
-  //   channel.send("Invalid player tag, try again!"); }
-  else {
-    // const player = await clash.player(secondaryCommand);
+  try {
     if (secondaryCommand.substr(0, 1) !== "#") {
-      let hash = "#";
-      let secondaryCommand = hash + secondaryCommand;
-      console.log("Test: ", secondaryCommand);
+      var secondaryCommand = "#" + secondaryCommand;
     }
     const player = await clash.player(secondaryCommand.toUpperCase());
-    const img = player.data.currentFavouriteCard.iconUrls.medium;
-    // const attachment = new Discord.MessageAttachment(img);
-    // console.log("Secondary Command: ", secondaryCommand);
-    // console.log("Player data: ", player.data);
-    console.log("Card: ", img);
-    // channel.send(
-    //   "Player " +
-    //     player.data.name +
-    //     ": \n" +
-    //     player.data.trophies +
-    //     " trophies \nLevel " +
-    //     player.data.expLevel
-    // );
+    // const img = player.data.currentFavouriteCard.iconUrls.medium;
+
+    // console.log("Card: ", img);
+
+    const embed = new Discord.MessageEmbed()
+      .setColor("#0099ff")
+      .setTitle(player.data.name + " " + player.data.tag)
+      .setURL("https://royaleapi.com/player/" + player.data.tag.substr(1))
+      .setAuthor(
+        "Flazey's Player Profile Thang",
+        "https://i.ytimg.com/vi/CCYCI9FINME/maxresdefault.jpg"
+        // "https://discord.js.org"
+      )
+      .setDescription("Player Profile ez dab")
+      .setThumbnail(player.data.currentFavouriteCard.iconUrls.medium)
+      .addFields(
+        { name: "Trophy Count", value: player.data.trophies, inline: false },
+        { name: "Level", value: player.data.expLevel, inline: false },
+        { name: "Role", value: player.data.role, inline: false },
+        { name: "War Day Wins", value: player.data.warDayWins, inline: false }
+      )
+      .setTimestamp();
+
+    channel.send(embed);
+  } catch (error) {
     channel.send(
-      "```Player: " +
-        player.data.name +
-        " \nTrophy Count: " +
-        player.data.trophies +
-        "  \nLevel " +
-        player.data.expLevel +
-        "\nRole: " +
-        player.data.role +
-        "\nWar Day Wins: " +
-        player.data.warDayWins +
-        "\nCurrent Favorite Card: " +
-        player.data.currentFavouriteCard.name +
-        "```"
+      "Invalid gamer tag: " +
+        secondaryCommand +
+        ". Try again! (ex: !player #YG200UJ0 or !player YG200UJ0)"
     );
-    // channel.send(
-    //   "**Player: " +
-    //     player.data.name +
-    //     "** \nTrophy Count: " +
-    //     player.data.trophies +
-    //     "  \nLevel " +
-    //     player.data.expLevel
-    // );
   }
-
-  // console.log("Test:)
-  // try {
-  //   const player = await clash.player(secondaryCommand);
-  //   channel.send("Player: "+ player);
-  // } catch (error) {
-  //   channel.send("Player: "+ secondaryCommand+ " is invalid. Please try again.");
-
-  //   console.log(error);
   // }
+}
+
+async function processCards(secondaryCommand, channel) {
+  try {
+    if (secondaryCommand.substr(0, 1) !== "#") {
+      var secondaryCommand = "#" + secondaryCommand;
+    }
+    const player = await clash.player(secondaryCommand.toUpperCase());
+    let arr = player.data.cards;
+    let sortedArr = sortByKey(arr, "level");
+    let level13 = [];
+    let level12 = [];
+    let level11 = [];
+    let level10 = [];
+    // console.log(sortedArr);
+    for (i = 0; i < sortedArr.length; i++) {
+      if (sortedArr[i].level === 10) {
+        // console.log("level 10");
+        level10.push(sortedArr[i].name);
+      } else if (sortedArr[i].level === 11) {
+        // console.log("level 11");
+        level11.push(sortedArr[i].name);
+      } else if (sortedArr[i].level === 12) {
+        // console.log("level 12");
+        level12.push(sortedArr[i].name);
+      } else if (sortedArr[i].level === 13) {
+        // console.log("level 13");
+        level13.push(sortedArr[i].name);
+      }
+    }
+    if (level13.length === 0) {
+      level13.push("N/A");
+    }
+    if (level12.length === 0) {
+      level12.push("N/A");
+    }
+    if (level11.length === 0) {
+      level11.push("N/A");
+    }
+    if (level10.length === 0) {
+      level10.push("N/A");
+    }
+    const embed = new Discord.MessageEmbed()
+      .setColor("#0099ff")
+      .setTitle(player.data.name + " " + player.data.tag)
+      .setURL("https://royaleapi.com/player/" + player.data.tag.substr(1))
+      .setAuthor(
+        "Flazey's Card Thang",
+        "https://i.ytimg.com/vi/CCYCI9FINME/maxresdefault.jpg"
+        // "https://discord.js.org"
+      )
+      .setDescription("Cards")
+      .setThumbnail(player.data.currentFavouriteCard.iconUrls.medium)
+      .addFields(
+        { name: "Level 13", value: level13, inline: false },
+        { name: "Level 12", value: level12, inline: false },
+        { name: "Level 11", value: level11, inline: false },
+        { name: "Level 10", value: level10, inline: false }
+      )
+      .setTimestamp();
+
+    channel.send(embed);
+  } catch (error) {
+    channel.send(
+      "Invalid gamer tag: " +
+        secondaryCommand +
+        ". Try again! (ex: !cards #YG200UJ0 or !cards YG200UJ0)"
+    );
+    console.log("error: ", error);
+  }
+}
+
+function sortByKey(array, key) {
+  return array.sort(function (a, b) {
+    var x = a[key];
+    var y = b[key];
+    return x < y ? -1 : x > y ? 1 : 0;
+  });
 }
 // async function fetchData() {
 //   const response = await fetch(
@@ -182,5 +262,8 @@ async function processPlayer(secondaryCommand, channel) {
 //   }
 // }
 
+//Used in Heroku
 // client.login(process.env.BOT_TOKEN);
+
+//Used in testing
 client.login(config.token);
