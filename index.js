@@ -1,9 +1,10 @@
+const fetch = require("node-fetch");
 const Discord = require("discord.js");
 const client = new Discord.Client();
-// const config = require("./config.json");
+const config = require("./config.json");
 const Client = require("clash-royale-api");
 // const clash = new Client(config.CR_API_TOKEN);
-const clash = new Client();
+// const clash = new Client();
 
 client.on("ready", () => {
   console.log("Connected as " + client.user.tag);
@@ -37,7 +38,7 @@ function processCommand(receivedMessage) {
   if (command === "commands") {
     channel.send("Here's a list of commands: !help, !clan, !player");
   } else if (command === "help") {
-    channel.send("You don't need help shhh...");
+    channel.send("You don't need help shhhssssss...");
   } else if (command === "clan") {
     channel.send("Our clan: ");
     processClan(channel);
@@ -52,10 +53,19 @@ function processCommand(receivedMessage) {
 
 async function processClan(channel) {
   channel.send("Works!");
-  const clan = await clash.clan("#YQYYGC02");
-  console.log("test");
-  console.log("Clash data? ", clan);
+  // const clan = await clash.clan("#YQYYGC02");
+  // console.log("test");
+  // console.log("Clash data? ", clan);
+  // fetch(
+  //   "https://finnhub.io/api/v1/quote?symbol=MSFT&token=br906t7rh5ral083k820"
+  // )
+  //   .then((response) => {
+  //     return response.json();
+  //   })
+  //   .then((response) => {
+  //     console.log("response: ", response);
+  //   });
 }
 
-client.login(process.env.BOT_TOKEN);
-// client.login(config.token);
+// client.login(process.env.BOT_TOKEN);
+client.login(config.token);
