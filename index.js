@@ -1,7 +1,7 @@
 const Discord = require("discord.js");
 const client = new Discord.Client();
 const Client = require("clash-royale-api");
-const clash = new Client();
+const clash = new Client(process.env.Test1);
 
 //Used in testing
 // const config = require("./config.json");
