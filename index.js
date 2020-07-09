@@ -8,6 +8,8 @@ const clash = new Client(process.env.Test);
 
 //Used in testing
 // const config = require("./config.json");
+// const clash = new Client(config.testToken);
+
 // const clash = new Client(config.tokenCR);
 // const fetch = require("node-fetch");
 
