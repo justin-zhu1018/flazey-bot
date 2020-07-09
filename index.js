@@ -12,7 +12,7 @@ const Client = require("clash-royale-api");
 // const clash = new Client(config.testToken);
 
 //Used for Heroku
-const clash = new Client(config.tokenCR);
+const clash = new Client(process.env.CR_API_TOKEN);
 
 client.on("ready", () => {
   console.log("Connected as " + client.user.tag);
