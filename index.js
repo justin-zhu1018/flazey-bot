@@ -19,7 +19,7 @@ client.on("ready", () => {
       console.log(` - ${channel.name} ${channel.type} ${channel.id}`);
     });
   });
-  let generalChannel = client.channels.cache.get("730295406189215745");
+  let generalChannel = client.channels.cache.get("730295406189215747");
   let botChannel = client.channels.cache.get("730528385385889834");
   //   const attachment = new Discord.MessageAttachment(
   //     "https://clashroyale.com/uploaded-images-blog/CR_facebook_share_02_180403_175322.jpg?mtime=20180403175322"
@@ -64,9 +64,10 @@ function processCommand(receivedMessage) {
   } else if (primaryCommand === "cards") {
     processCards(secondaryCommand, channel);
   } else {
-    channel.send(
-      "Error: No command specified. For a list of commands, type !commands"
-    );
+    // channel.send(
+    //   "Error: No command specified. For a list of commands, type !commands"
+    // );
+    return;
   }
 }
 
