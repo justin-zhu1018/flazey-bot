@@ -9,15 +9,17 @@ var config, clash;
 
 if (process.env.NODE_ENV === "production") {
   //Used for Heroku
+  console.log("in production!");
   clash = new Client(process.env.CR_API_TOKEN);
   client.login(process.env.BOT_TOKEN);
 } else if (process.env.NODE_ENV === "development") {
-  return;
-} else {
+  console.log("in development!");
   //Used for testing
-  config = require("./config.json");
-  clash = new Client(config.testToken);
-  client.login(config.token);
+  try {
+    config = require("./config.json");
+    clash = new Client(config.testToken);
+    client.login(config.token);
+  } catch (error) {}
 }
 
 client.on("ready", () => {
