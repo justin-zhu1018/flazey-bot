@@ -16,12 +16,11 @@ if (process.env.NODE_ENV === "production") {
   console.log(
     "Currently in development! Remember to turn worker back on in Heroku!"
   );
+} else {
   //Used for testing
-  try {
-    config = require("./config.json");
-    clash = new Client(config.testToken);
-    client.login(config.token);
-  } catch (error) {}
+  config = require("./config.json");
+  clash = new Client(config.testToken);
+  client.login(config.token);
 }
 
 client.on("ready", () => {
