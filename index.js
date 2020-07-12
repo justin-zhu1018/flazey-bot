@@ -14,7 +14,7 @@ if (process.env.NODE_ENV === "production") {
   client.login(process.env.BOT_TOKEN);
 } else if (process.env.NODE_ENV === "development") {
   console.log(
-    "Currently in development! remember to turn worker back on in Heroku!"
+    "Currently in development! Remember to turn worker back on in Heroku!"
   );
   //Used for testing
   try {
