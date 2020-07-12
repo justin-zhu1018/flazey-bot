@@ -11,6 +11,8 @@ if (process.env.NODE_ENV === "production") {
   //Used for Heroku
   clash = new Client(process.env.CR_API_TOKEN);
   client.login(process.env.BOT_TOKEN);
+} else if (process.env.NODE_ENV === "development") {
+  return;
 } else {
   //Used for testing
   config = require("./config.json");
