@@ -2,6 +2,3 @@
 
 #ignore discord token file
 /config.json
-
-#ignore node-modules (npm install mongoose express morgan axios concurrently -s, npm install -g nodemon)
-/node_modules
