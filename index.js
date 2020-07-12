@@ -1,13 +1,22 @@
 const Discord = require("discord.js");
 const client = new Discord.Client();
 const Client = require("clash-royale-api");
+const axios = require("axios");
+var config, clash;
 
-//Used in testing
-// const config = require("./config.json");
-// const clash = new Client(config.testToken);
+//TODO: Work on being able to save data to the database
+//TODO: Work on being able to get the data(DONE) and use it to create an embed with the war cards + personal levels
 
-//Used for Heroku
-const clash = new Client(process.env.CR_API_TOKEN);
+if (process.env.NODE_ENV === "production") {
+  //Used for Heroku
+  clash = new Client(process.env.CR_API_TOKEN);
+  client.login(process.env.BOT_TOKEN);
+} else {
+  //Used for testing
+  config = require("./config.json");
+  clash = new Client(config.testToken);
+  client.login(config.token);
+}
 
 client.on("ready", () => {
   console.log("Connected as " + client.user.tag);
@@ -25,7 +34,7 @@ client.on("ready", () => {
   //     "https://clashroyale.com/uploaded-images-blog/CR_facebook_share_02_180403_175322.jpg?mtime=20180403175322"
   //   );
 
-  generalChannel.send("I am here! For a list of the commands, type !commands.");
+  // generalChannel.send("I am here! For a list of the commands, type !commands.");
 
   // botChannel.send(
   //   "I am here! List of commands: ```" +
@@ -63,6 +72,8 @@ function processCommand(receivedMessage) {
     processPlayer(secondaryCommand, channel);
   } else if (primaryCommand === "cards") {
     processCards(secondaryCommand, channel);
+  } else if (primaryCommand === "g") {
+    processGet(secondaryCommand, channel);
   } else {
     // channel.send(
     //   "Error: No command specified. For a list of commands, type !commands"
@@ -295,10 +306,20 @@ function sortByKey(array, key, maxLevel) {
   });
 }
 
-//Used in Heroku
-if (process.env.NODE_ENV === "production") {
-  client.login(process.env.BOT_TOKEN);
+function processGet(data, channel) {
+  channel.send("get sht");
+  this.getData(channel);
 }
 
-//Used in testing
-// client.login(config.token);
+getData = (channel) => {
+  axios
+    .get("http://localhost:8080/api")
+    .then((response) => {
+      const data = response.data;
+      console.log("Data retrieved: ", response.data);
+      //ENTER FUNCTION HERE!
+    })
+    .catch((error) => {
+      console.log("error: ", error);
+    });
+};
