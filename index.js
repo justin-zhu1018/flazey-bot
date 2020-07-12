@@ -296,7 +296,9 @@ function sortByKey(array, key, maxLevel) {
 }
 
 //Used in Heroku
-client.login(process.env.BOT_TOKEN);
+if (process.env.NODE_ENV === "production") {
+  client.login(process.env.BOT_TOKEN);
+}
 
 //Used in testing
 // client.login(config.token);
