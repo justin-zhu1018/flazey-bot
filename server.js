@@ -2,16 +2,20 @@ const express = require("express");
 const mongoose = require("mongoose");
 const morgan = require("morgan");
 const path = require("path");
-const WarCards = require("./models/warCards");
+var config, MONGODB_URI;
+// const WarCards = require("./models/warCards");
 
+if (process.env.NODE_ENV === "production") {
+  MONGODB_URI = process.env.MONGODB_URI;
+} else {
+  config = require("./config.json");
+  MONGODB_URI = config.MONGODB_URI;
+}
 const app = express();
 
 const routes = require("./routes/api");
 
 const PORT = process.env.PORT || 8080;
-
-const MONGODB_URI =
-  "mongodb+srv://admin:admin123xd@flazey-bot-db.yjtrf.mongodb.net/flazey-bot-db?retryWrites=true&w=majority";
 
 mongoose.connect(MONGODB_URI || "mongodb://localhost/db", {
   useNewUrlParser: true,
