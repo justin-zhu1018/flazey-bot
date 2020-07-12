@@ -9,11 +9,13 @@ var config, clash;
 
 if (process.env.NODE_ENV === "production") {
   //Used for Heroku
-  console.log("in production!");
+  console.log("Currently in production! Bot is up and running!");
   clash = new Client(process.env.CR_API_TOKEN);
   client.login(process.env.BOT_TOKEN);
 } else if (process.env.NODE_ENV === "development") {
-  console.log("in development!");
+  console.log(
+    "Currently in development! remember to turn worker back on in Heroku!"
+  );
   //Used for testing
   try {
     config = require("./config.json");
