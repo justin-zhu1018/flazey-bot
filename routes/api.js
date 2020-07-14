@@ -14,7 +14,7 @@ router.get("/", (req, res) => {
 });
 
 router.post("/save", (req, res) => {
-  console.log("request body: "), req.body;
+  console.log("request body: ", res);
   const data = req.body;
   const newTestData = new WarCards(data);
   newTestData.save((error) => {

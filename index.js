@@ -79,6 +79,8 @@ function processCommand(receivedMessage) {
     processCards(secondaryCommand, channel);
   } else if (primaryCommand === "g") {
     processGet(secondaryCommand, channel);
+  } else if (primaryCommand === "s") {
+    processSave(secondaryCommand, channel);
   } else {
     // channel.send(
     //   "Error: No command specified. For a list of commands, type !commands"
@@ -314,6 +316,8 @@ function sortByKey(array, key, maxLevel) {
 function processGet(data, channel) {
   channel.send("get sht");
   this.getData(channel);
+  // const dataS = await this.getData(channel);
+  // console.log("data: ", dataS);
 }
 
 getData = (channel) => {
@@ -321,10 +325,33 @@ getData = (channel) => {
     .get("http://localhost:8080/api")
     .then((response) => {
       const data = response.data;
-      console.log("Data retrieved: ", response.data);
-      //ENTER FUNCTION HERE!
+      console.log("Data retrieved: ", data[0]);
     })
     .catch((error) => {
       console.log("error: ", error);
+    });
+};
+
+function processSave(data, channel) {
+  console.log("data: ", data);
+  channel.send("Save! " + data);
+  this.saveData(data);
+}
+
+saveData = (warCardData) => {
+  const payload = {
+    warcards: warCardData,
+  };
+  axios({
+    url: "http://localhost:8080/api/save",
+    method: "POST",
+    data: payload,
+  })
+    .then(() => {
+      // console.log("data SENT!", payload);
+      //function
+    })
+    .catch((error) => {
+      console.log("error", error);
     });
 };
