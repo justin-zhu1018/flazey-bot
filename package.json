@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js",
+    "start": "node server.js",
     "dev": "concurrently -n server,bot -c 'red,blue' \"nodemon server.js\" \"nodemon index.js\"",
     "heroku-exe": "concurrently -n server,bot \"node server.js\" \"node index.js\""
   },
