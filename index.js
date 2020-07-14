@@ -12,6 +12,7 @@ if (process.env.NODE_ENV === "production") {
   console.log("Currently in production! Bot is up and running!");
   clash = new Client(process.env.CR_API_TOKEN);
   client.login(process.env.BOT_TOKEN);
+  DB_URL = process.env.DB_URL;
 } else if (process.env.NODE_ENV === "development") {
   console.log(
     "Currently in development! Remember to turn worker back on in Heroku!"
@@ -322,8 +323,9 @@ function processGet(data, channel) {
 }
 
 getData = (channel) => {
+  console.log("DB URL: ", DB_URL);
   axios
-    .get("http://localhost:8080/api")
+    .get(DB_URL + "/api")
     .then((response) => {
       const data = response.data;
       console.log("Data retrieved: ", data[0]);
