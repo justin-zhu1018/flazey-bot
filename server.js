@@ -8,8 +8,14 @@ var config, MONGODB_URI;
 if (process.env.NODE_ENV === "production") {
   MONGODB_URI = process.env.MONGODB_URI;
 } else {
-  config = require("./config.json");
-  MONGODB_URI = config.MONGODB_URI;
+  try {
+    config = require("./config.json");
+    MONGODB_URI = config.MONGODB_URI;
+  } catch (error) {
+    console.log(
+      "Currently in development! Remember to turn worker back on in Heroku!"
+    );
+  }
 }
 const app = express();
 
