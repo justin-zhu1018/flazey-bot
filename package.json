@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
     "dev": "concurrently -n server,bot -c 'red,blue' \"nodemon server.js\" \"nodemon index.js\"",
-    "testServer": "node server.js"
+    "heroku-exe": "concurrently -n server,bot \"node server.js\" \"node index.js\""
   },
   "keywords": [],
   "author": "",

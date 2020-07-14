@@ -1,2 +1,1 @@
-worker: node index.js
-worker: npm run dev
+worker: npm run heroku-exe
