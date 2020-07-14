@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
-    "dev": "concurrently -n server,bot -c 'red,blue' \"node server.js\" \"node index.js\""
+    "dev": "concurrently -n server,bot -c 'red,blue' \"node server.js\" \"node index.js\"",
+    "testServer": "node server.js"
   },
   "keywords": [],
   "author": "",
