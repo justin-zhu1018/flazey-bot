@@ -322,7 +322,7 @@ function processGet(data, channel) {
 
 getData = (channel) => {
   axios
-    .get("http://localhost:8080/api")
+    .get("/api")
     .then((response) => {
       const data = response.data;
       console.log("Data retrieved: ", data[0]);
@@ -348,7 +348,7 @@ saveData = (warCardData) => {
     data: payload,
   })
     .then(() => {
-      // console.log("data SENT!", payload);
+      console.log("data SENT!", payload);
       //function
     })
     .catch((error) => {
