@@ -34,6 +34,10 @@ mongoose.connection.on("connected", () => {
 
 app.use(morgan("tiny"));
 
+//IMPORTANT for data save
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
 //dummy save
 // const data = { warcards: "yep warcards!" };
 // newWarCards = new WarCards(data);

@@ -2,7 +2,7 @@ const Discord = require("discord.js");
 const client = new Discord.Client();
 const Client = require("clash-royale-api");
 const axios = require("axios");
-var config, clash;
+var config, clash, DB_URL;
 
 //TODO: Work on being able to save data to the database
 //TODO: Work on being able to get the data(DONE) and use it to create an embed with the war cards + personal levels
@@ -21,6 +21,7 @@ if (process.env.NODE_ENV === "production") {
   config = require("./config.json");
   clash = new Client(config.testToken);
   client.login(config.token);
+  DB_URL = config.DB_URL;
 }
 
 client.on("ready", () => {
@@ -322,7 +323,7 @@ function processGet(data, channel) {
 
 getData = (channel) => {
   axios
-    .get("/api")
+    .get("http://localhost:8080/api")
     .then((response) => {
       const data = response.data;
       console.log("Data retrieved: ", data[0]);
@@ -338,7 +339,7 @@ function processSave(data, channel) {
   this.saveData(data);
 }
 
-saveData = (warCardData) => {
+saveData = async (warCardData) => {
   const payload = {
     warcards: warCardData,
   };
@@ -354,4 +355,27 @@ saveData = (warCardData) => {
     .catch((error) => {
       console.log("error", error);
     });
+  // await axios
+  //   .post(DB_URL + "/api/save", { warCards: warCardData })
+  //   .then((response) => {
+  //     console.log("Res: ", response.data);
+  //   })
+  //   .catch((error) => {
+  //     console.log("error: ", error);
+  //   });
 };
+
+//await axios
+// .post(MAILER_API_URL + "/api/Mailer/sendBlastEmail", {
+//   recipientEmail: emailList,
+//   blastSubject: subject,
+//   blastContent: content,
+// })
+// .then((response) => {
+//   console.log("Response? ", response.data);
+// })
+// .catch((error) => {
+//   status.error = true;
+//   status.responseData = error;
+//   console.log("Wrong: ", error);
+// });
