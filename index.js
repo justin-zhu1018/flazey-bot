@@ -2,6 +2,7 @@ const Discord = require("discord.js");
 const client = new Discord.Client();
 const Client = require("clash-royale-api");
 const axios = require("axios");
+const WarCards = require("./models/warCards");
 
 var config, clash, DB_URL;
 
@@ -79,9 +80,9 @@ function processCommand(receivedMessage) {
   } else if (primaryCommand === "player") {
     processPlayer(secondaryCommand, channel);
   } else if (primaryCommand === "cards") {
-    processCards(secondaryCommand, channel);
+    processCards(primaryCommand, secondaryCommand, channel);
   } else if (primaryCommand === "get") {
-    processGet(secondaryCommand, channel);
+    processGet(primaryCommand, secondaryCommand, channel);
   } else if (primaryCommand === "save") {
     processSave(fullCommand.substr(5), channel);
   } else if (primaryCommand === "d") {
@@ -113,7 +114,7 @@ function processCommandsList(channel) {
         inline: false,
       },
       {
-        name: "!clan [clan-tag] || !clan",
+        name: "!clan [clan-tag] or !clan",
         value: "Look up a clan!",
         inline: false,
       },
@@ -130,6 +131,12 @@ function processCommandsList(channel) {
       {
         name: "!help",
         value: "For when you need help.",
+        inline: false,
+      },
+      {
+        name: "!get [player-tag] or !get",
+        value:
+          "Either get the player's war card levels for this war or get the war cards list!",
         inline: false,
       }
     )
@@ -235,21 +242,34 @@ async function processPlayer(secondaryCommand, channel) {
   }
 }
 
-async function processCards(secondaryCommand, channel) {
+processCards = async (primaryCommand, secondaryCommand, channel, data) => {
   try {
     if (secondaryCommand.substr(0, 1) !== "#") {
       var secondaryCommand = "#" + secondaryCommand;
     }
 
     var player = await clash.player(secondaryCommand.toUpperCase());
+    var arr = undefined,
+      filteredArr = undefined,
+      sortedArr = undefined,
+      level;
 
-    //Testing
-    // const player = await clash.player("#YG200UJ0");
+    var author = undefined,
+      desc = undefined;
 
-    // console.log(player.data.cards);
+    if (data !== undefined) {
+      author = "Flazey's Warcard Thang";
+      desc = "Warcards bish";
+      filteredArr = await getWarCards(player.data.cards, data.WarCards);
+      sortedArr = sortByKey(filteredArr, "level");
+    } else {
+      author = "Flazey's Card Thang";
+      desc = "cards";
+      arr = player.data.cards;
+      sortedArr = sortByKey(arr, "level", "maxLevel");
+    }
 
-    let arr = player.data.cards;
-    let sortedArr = sortByKey(arr, "level", "maxLevel");
+    // let sortedArr = sortByKey(arr, "level", "maxLevel");
     let level13 = [];
     let level12 = [];
     let level11 = [];
@@ -258,14 +278,27 @@ async function processCards(secondaryCommand, channel) {
     // console.log(sortedArr);
 
     for (i = 0; i < sortedArr.length; i++) {
-      var level = 13 - (sortedArr[i].maxLevel - sortedArr[i].level);
-      if (level === 10) {
+      if (data !== undefined) {
+        try {
+          level = sortedArr[i].level;
+        } catch (error) {
+          // console.log(error);
+          level = undefined;
+        }
+      } else {
+        level = 13 - (sortedArr[i].maxLevel - sortedArr[i].level);
+      }
+      if (level === (10 || " 10")) {
+        // console.log("level 10");
         level10.push(sortedArr[i].name);
       } else if (level === 11) {
+        // console.log("level 11");
         level11.push(sortedArr[i].name);
       } else if (level === 12) {
+        // console.log("level 12");
         level12.push(sortedArr[i].name);
       } else if (level === 13) {
+        // console.log("level 13");
         level13.push(sortedArr[i].name);
       }
     }
@@ -286,11 +319,8 @@ async function processCards(secondaryCommand, channel) {
       .setColor("#0099ff")
       .setTitle(player.data.name + " " + player.data.tag)
       .setURL("https://royaleapi.com/player/" + player.data.tag.substr(1))
-      .setAuthor(
-        "Flazey's Card Thang",
-        "https://i.ytimg.com/vi/CCYCI9FINME/maxresdefault.jpg"
-      )
-      .setDescription("Cards")
+      .setAuthor(author, "https://i.ytimg.com/vi/CCYCI9FINME/maxresdefault.jpg")
+      .setDescription(desc)
       .setThumbnail(player.data.currentFavouriteCard.iconUrls.medium)
       .addFields(
         { name: "Level 13", value: level13, inline: false },
@@ -302,29 +332,97 @@ async function processCards(secondaryCommand, channel) {
 
     channel.send(embed);
   } catch (error) {
-    channel.send(
-      "Invalid gamer tag: **" +
-        secondaryCommand +
-        "**. Try again! (ex: !cards #YG200UJ0 or !cards YG200UJ0)"
-    );
+    if (secondaryCommand !== undefined) {
+      if (primaryCommand === "get") {
+        channel.send(
+          "Invalid gamer tag: **" +
+            secondaryCommand +
+            "**. Try again! (ex: !get #YG200UJ0 or !get YG200UJ0 or !get for the list of war cards)"
+        );
+      } else if (primaryCommand === "cards") {
+        channel.send(
+          "Invalid gamer tag: **" +
+            secondaryCommand +
+            "**. Try again! (ex: !cards #YG200UJ0 or !cards YG200UJ0"
+        );
+      }
+    }
+
+    // console.log(error);
+  }
+};
+
+function sortByKey(array, key, maxLevel) {
+  if (maxLevel !== undefined) {
+    return array.sort(function (a, b) {
+      var x = 13 - (a[maxLevel] - a[key]);
+      var y = 13 - (b[maxLevel] - b[key]);
+      return x < y ? -1 : x > y ? 1 : 0;
+    });
+  } else {
+    return array.sort(function (a, b) {
+      var x = a[key];
+      var y = b[key];
+      return x < y ? -1 : x > y ? 1 : 0;
+    });
   }
 }
 
-function sortByKey(array, key, maxLevel) {
-  return array.sort(function (a, b) {
-    var x = 13 - (a[maxLevel] - a[key]);
-    var y = 13 - (b[maxLevel] - b[key]);
-    return x < y ? -1 : x > y ? 1 : 0;
-  });
-}
+//!get #YG200UJ0
+getWarCards = async (playerArr, data) => {
+  console.log(data.split(/, |,| ,/));
+  let arr = data.split(/, |,| ,/);
+  var warCardArr = new Array(),
+    filteredArr = new Array();
+  for (i = 0; i < arr.length; i++) {
+    var element = arr[i].split("(");
+    warCardArr[i] = {
+      name: element[0],
+      level: element[1].substring(0, element[1].length - 1),
+    };
+  }
 
-processGet = async (secondaryCommand, channel) => {
+  warCardArr.forEach(function (warcard, index) {
+    //traverse every player card to find
+    for (j = 0; j < playerArr.length; j++) {
+      let playerCard = playerArr[j].name.toLowerCase().replace(/\s/g, "");
+      let warCard = warcard.name.toLowerCase().replace(/\s/g, "");
+      if (playerCard === warCard) {
+        if (warcard.level < 13 - (playerArr[j].maxLevel - playerArr[j].level)) {
+          playerArr[j].level = parseInt(warcard.level);
+          filteredArr[index] = playerArr[j];
+        } else if (
+          warcard.level >=
+          13 - (playerArr[j].maxLevel - playerArr[j].level)
+        ) {
+          playerArr[j].level =
+            13 - (playerArr[j].maxLevel - playerArr[j].level);
+          filteredArr[index] = playerArr[j];
+        }
+
+        // console.log(filteredArr[index]);
+      }
+    }
+  });
+  return filteredArr;
+};
+
+//secondary command would be player tag
+processGet = async (primaryCommand, secondaryCommand, channel) => {
   axios
     .get(DB_URL + "/api")
     .then((response) => {
       const data = response.data;
-      console.log("Data retrieved: ", data[data.length - 1]);
-      sendRetrievedData(data[data.length - 1], secondaryCommand, channel);
+      if (secondaryCommand === undefined) {
+        sendRetrievedData(data[data.length - 1], secondaryCommand, channel);
+      } else {
+        processCards(
+          primaryCommand,
+          secondaryCommand,
+          channel,
+          data[data.length - 1]
+        );
+      }
     })
     .catch((error) => {
       console.log(error);
@@ -332,11 +430,8 @@ processGet = async (secondaryCommand, channel) => {
 };
 
 sendRetrievedData = (data, secondaryCommand, channel) => {
-  console.log("data: ", data.WarCards);
-  // channel.send("Warcard list: " + data.WarCards);
-  // var war = "mega knight, musketeer, justin,jay,ja ";
-  console.log("SPLIT! ", data.WarCards.split(/, |,| ,/));
-  let arr = data.WarCards.split(/, |,| ,/);
+  // console.log("data: ", data.WarCards);
+  channel.send("War Card List: " + data.WarCards);
 };
 
 processSave = async (data, channel) => {
