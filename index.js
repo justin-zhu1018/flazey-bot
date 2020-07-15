@@ -6,8 +6,7 @@ const WarCards = require("./models/warCards");
 
 var config, clash, DB_URL;
 
-//TODO: Work on being able to save data to the database
-//TODO: Work on being able to get the data(DONE) and use it to create an embed with the war cards + personal levels
+//TODO: heroku addons:create newrelic:wayne --app flazey-bot to ping
 
 if (process.env.NODE_ENV === "production") {
   //Used for Heroku
