@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 //Schema
 const Schema = mongoose.Schema;
 const WarCardSchema = new Schema({
+  _id: String,
   WarCards: String,
   date: { type: String, default: Date.now() },
 });

@@ -26,6 +26,7 @@ const PORT = process.env.PORT || 8080;
 mongoose.connect(MONGODB_URI || "mongodb://localhost/db", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
+  useFindAndModify: false,
 });
 
 mongoose.connection.on("connected", () => {

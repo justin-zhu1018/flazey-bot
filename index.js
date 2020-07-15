@@ -59,11 +59,41 @@ client.on("message", (receivedMessage) => {
     return;
   }
   if (receivedMessage.content.startsWith("!")) {
-    processCommand(receivedMessage);
+    // getRoles(receivedMessage);
+
+    processCommand(receivedMessage, verifyRole(receivedMessage));
   }
 });
 
-function processCommand(receivedMessage) {
+getRoles = (receivedMessage) => {
+  let cachedRoles = receivedMessage.member.roles.cache;
+  console.log(cachedRoles);
+};
+
+verifyRole = (receivedMessage) => {
+  const member = receivedMessage.guild.members.cache.get(
+    receivedMessage.author.id
+  );
+  var isRole = false;
+  for (i = 0; i < member._roles.length; i++) {
+    // console.log(member._roles);
+    if (member._roles[i] === "733042943883214868") {
+      isRole = true;
+    }
+    if (member._roles[i] === "730298484409761802") {
+      isRole = true;
+    }
+  }
+  if (isRole) {
+    // receivedMessage.reply("Hi admin");
+    return true;
+  } else {
+    // receivedMessage.reply("YOU have no power");
+    return false;
+  }
+};
+
+function processCommand(receivedMessage, roleVerified) {
   let fullCommand = receivedMessage.content.substr(1);
   let splitCommand = fullCommand.split(" ");
   let primaryCommand = splitCommand[0];
@@ -83,8 +113,13 @@ function processCommand(receivedMessage) {
     processCards(primaryCommand, secondaryCommand, channel);
   } else if (primaryCommand === "get") {
     processGet(primaryCommand, secondaryCommand, channel);
-  } else if (primaryCommand === "save") {
-    processSave(fullCommand.substr(5), channel);
+  } else if (primaryCommand === "update") {
+    if (roleVerified) {
+      // channel.send("You have the powers to run this command!");
+      processUpdate(fullCommand.substr(7), channel);
+    } else {
+      channel.send("You don't have the powers to run this command!");
+    }
   } else if (primaryCommand === "d") {
     processDelete(channel);
   } else {
@@ -128,15 +163,22 @@ function processCommandsList(channel) {
         value: "Admire your special someone's cards <33",
         inline: false,
       },
-      {
-        name: "!help",
-        value: "For when you need help.",
-        inline: false,
-      },
+
       {
         name: "!get [player-tag] or !get",
         value:
           "Either get the player's war card levels for this war or get the war cards list!",
+        inline: false,
+      },
+      {
+        name: "!update [card-list]",
+        value:
+          "Update the war cards! Only Co-leaders can use it :). \nFormatting card-list : dark prince(10), P.E.K.K.A(10), other cards...",
+        inline: false,
+      },
+      {
+        name: "!help",
+        value: "For when you need help.",
         inline: false,
       }
     )
@@ -430,25 +472,62 @@ processGet = async (primaryCommand, secondaryCommand, channel) => {
 };
 
 sendRetrievedData = (data, secondaryCommand, channel) => {
-  // console.log("data: ", data.WarCards);
-  channel.send("War Card List: " + data.WarCards);
+  // console.log("data: ", data.WarCards.length);
+  // var commaCounter = 0,
+  //   commaIndex = 0;
+  // for (i = 0; i < data.WarCards.length; i++) {
+  //   if (data.WarCards.charAt(i) === ",") {
+  //     commaCounter++;
+  //     console.log("commaCounter:", commaCounter);
+  //   }
+  //   if (commaCounter === 20) {
+  //     console.log("Comma index! ", i);
+  //     if (commaIndex === 0) {
+  //       commaIndex = i;
+  //     }
+  //   }
+  // }
+  // console.log("data 1:", data.WarCards.substr(0, commaIndex));
+  // console.log("data 2:", data.WarCards.substr(commaIndex + 1));
+  // var col1 = data.WarCards.substr(0, commaIndex).split(/, |,| ,/);
+  // var col2 = data.WarCards.substr(commaIndex + 1).split(/, |,| ,/);
+  var list = data.WarCards.split(/, |,| ,/);
+  const embed = new Discord.MessageEmbed()
+    .setColor("#0099ff")
+    .setAuthor(
+      "Flazey's War Card List Thang",
+      "https://i.ytimg.com/vi/CCYCI9FINME/maxresdefault.jpg"
+    )
+    // .setDescription("List of Cards")
+    // .addFields({ name: "----------------", value: col1, inline: true })
+    // .addFields({ name: "-----", value: "--|--", inline: true })
+    // .addFields({ name: "----------------", value: col2, inline: true })
+    .addFields({ name: "List of Cards", value: list, inline: true })
+
+    .setTimestamp();
+
+  channel.send(embed);
 };
 
-processSave = async (data, channel) => {
-  console.log("data: ", data);
-  let arr = data.split(/, |,| ,/);
-  console.log("arr ", arr);
+processUpdate = async (data, channel) => {
+  if (data.length < 400) {
+    channel.send("C'mon there's gotta be more war cards than that! Try again!");
+  } else {
+    // console.log("data: ", data);
+    let arr = data.split(/, |,| ,/);
+    // console.log("arr ", arr);
 
-  let payload = { WarCards: data };
-  await axios
-    .post(DB_URL + "/api/save", payload)
-    .then((response) => {
-      console.log("Saved: ", response.data);
-      channel.send("Data saved!");
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+    let payload = { WarCards: data };
+    await axios
+      .post(DB_URL + "/api/update", payload)
+      .then((response) => {
+        console.log("Saved: ", response.data);
+        channel.send("Data saved!");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
 };
 
 processDelete = async (channel) => {
@@ -458,25 +537,3 @@ processDelete = async (channel) => {
 
   console.log(returnStuff());
 };
-
-returnStuff = async () => {
-  var WarCards = require("./models/warCards");
-
-  const wc = await WarCards.findOne({ warcards: "yep warcards!" }).exec();
-  return wc;
-};
-
-//await axios
-// .post(MAILER_API_URL + "/api/Mailer/sendBlastEmail", {
-//   recipientEmail: emailList,
-//   blastSubject: subject,
-//   blastContent: content,
-// })
-// .then((response) => {
-//   console.log("Response? ", response.data);
-// })
-// .catch((error) => {
-//   status.error = true;
-//   status.responseData = error;
-//   console.log("Wrong: ", error);
-// });
