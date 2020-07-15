@@ -2,6 +2,7 @@ const Discord = require("discord.js");
 const client = new Discord.Client();
 const Client = require("clash-royale-api");
 const axios = require("axios");
+
 var config, clash, DB_URL;
 
 //TODO: Work on being able to save data to the database
@@ -79,10 +80,12 @@ function processCommand(receivedMessage) {
     processPlayer(secondaryCommand, channel);
   } else if (primaryCommand === "cards") {
     processCards(secondaryCommand, channel);
-  } else if (primaryCommand === "g") {
+  } else if (primaryCommand === "get") {
     processGet(secondaryCommand, channel);
-  } else if (primaryCommand === "s") {
-    processSave(secondaryCommand, channel);
+  } else if (primaryCommand === "save") {
+    processSave(fullCommand.substr(5), channel);
+  } else if (primaryCommand === "d") {
+    processDelete(channel);
   } else {
     // channel.send(
     //   "Error: No command specified. For a list of commands, type !commands"
@@ -315,56 +318,57 @@ function sortByKey(array, key, maxLevel) {
   });
 }
 
-function processGet(data, channel) {
-  channel.send("get sht");
-  this.getData(channel);
-  // const dataS = await this.getData(channel);
-  // console.log("data: ", dataS);
-}
-
-getData = (channel) => {
-  console.log("DB URL: ", DB_URL);
+processGet = async (secondaryCommand, channel) => {
   axios
     .get(DB_URL + "/api")
     .then((response) => {
       const data = response.data;
-      console.log("Data retrieved: ", data[0]);
+      console.log("Data retrieved: ", data[data.length - 1]);
+      sendRetrievedData(data[data.length - 1], secondaryCommand, channel);
     })
     .catch((error) => {
-      console.log("error: ", error);
+      console.log(error);
     });
 };
 
-function processSave(data, channel) {
-  console.log("data: ", data);
-  channel.send("Save! " + data);
-  this.saveData(data);
-}
+sendRetrievedData = (data, secondaryCommand, channel) => {
+  console.log("data: ", data.WarCards);
+  // channel.send("Warcard list: " + data.WarCards);
+  // var war = "mega knight, musketeer, justin,jay,ja ";
+  console.log("SPLIT! ", data.WarCards.split(/, |,| ,/));
+  let arr = data.WarCards.split(/, |,| ,/);
+};
 
-saveData = async (warCardData) => {
-  const payload = {
-    warcards: warCardData,
-  };
-  axios({
-    url: "http://localhost:8080/api/save",
-    method: "POST",
-    data: payload,
-  })
-    .then(() => {
-      console.log("data SENT!", payload);
-      //function
+processSave = async (data, channel) => {
+  console.log("data: ", data);
+  let arr = data.split(/, |,| ,/);
+  console.log("arr ", arr);
+
+  let payload = { WarCards: data };
+  await axios
+    .post(DB_URL + "/api/save", payload)
+    .then((response) => {
+      console.log("Saved: ", response.data);
+      channel.send("Data saved!");
     })
     .catch((error) => {
-      console.log("error", error);
+      console.log(error);
     });
-  // await axios
-  //   .post(DB_URL + "/api/save", { warCards: warCardData })
-  //   .then((response) => {
-  //     console.log("Res: ", response.data);
-  //   })
-  //   .catch((error) => {
-  //     console.log("error: ", error);
-  //   });
+};
+
+processDelete = async (channel) => {
+  channel.send("delete!");
+  // const wc = WarCardData();
+  // WarCards.deleteMany({});
+
+  console.log(returnStuff());
+};
+
+returnStuff = async () => {
+  var WarCards = require("./models/warCards");
+
+  const wc = await WarCards.findOne({ warcards: "yep warcards!" }).exec();
+  return wc;
 };
 
 //await axios
