@@ -51,4 +51,10 @@ app.use(express.urlencoded({ extended: false }));
 // });
 
 app.use("/api", routes);
+
+if (process.env.NODE_ENV === "production") {
+  console.log("in production use static build");
+  app.use(express.static("./server-page/build"));
+}
+
 app.listen(PORT, console.log(`SERVER IS STARTING AT ${PORT}`));
