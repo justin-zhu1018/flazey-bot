@@ -57,4 +57,8 @@ if (process.env.NODE_ENV === "production") {
   app.use(express.static("./server-page/build"));
 }
 
+app.get("/", function (req, res) {
+  res.render("index", {});
+});
+
 app.listen(PORT, console.log(`SERVER IS STARTING AT ${PORT}`));
