@@ -58,7 +58,6 @@ if (process.env.NODE_ENV === "production") {
 }
 
 app.get("/", function (req, res) {
-  res.render("index", {});
+  res.render("./server-page/build/index", {});
 });
-
 app.listen(PORT, console.log(`SERVER IS STARTING AT ${PORT}`));
