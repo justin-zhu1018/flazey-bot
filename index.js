@@ -118,6 +118,8 @@ function processCommand(receivedMessage, roleVerified) {
     cr_functions.processCards();
   } else if (primaryCommand === 'get') {
     cr_functions.processGet();
+  } else if (primaryCommand === 'glitch') {
+    cr_functions.processGlitch();
   } else if (primaryCommand === 'update') {
     if (roleVerified) {
       cr_functions.processUpdate(fullCommand.substr(7), channel);

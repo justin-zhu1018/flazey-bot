@@ -47,15 +47,16 @@ class ClashRoyaleFunctions {
         {
           name: '!get [player-tag] or !get',
           value:
-            "Either get the player's war card levels for this war or get the war cards list!",
+            "DEPRECATED due to new war: Either get the player's war card levels for this war or get the war cards list!",
           inline: false,
         },
         {
           name: '!update [card-list]',
           value:
-            'Update the war cards! Only Co-leaders can use it :). \nFormatting card-list : dark prince(10), P.E.K.K.A(10), other cards...',
+            'DEPRECATED due to new war: Update the war cards! Only Co-leaders can use it :). \nFormatting card-list : dark prince(10), P.E.K.K.A(10), other cards...',
           inline: false,
         },
+        {name: '!glitch', value: '2v2 glitch POGGERS', inline: false},
         {
           name: '!help',
           value: 'For when you need help.',
@@ -435,6 +436,53 @@ class ClashRoyaleFunctions {
     // const wc = WarCardData();
     // WarCards.deleteMany({});
     console.log(returnStuff());
+  };
+
+  processGlitch = async () => {
+    const embed = new Discord.MessageEmbed()
+      .setColor('#0099ff')
+      .setTitle('About the 2v2 Glitch')
+      .setURL(
+        'https://www.youtube.com/watch?v=jL3KAnvYFW8&ab_channel=OrangeJuiceGaming'
+      )
+      .setAuthor(
+        "Flazey's Big Glitch Thang",
+        'https://i.ytimg.com/vi/CCYCI9FINME/maxresdefault.jpg'
+      )
+      .setDescription('Do the glitch ez')
+      .addFields(
+        {name: 'Step 1', value: 'Start a 2v2 normally', inline: false},
+        {
+          name: 'Step 2',
+          value: 'Have Player 1 request a rematch',
+          inline: false,
+        },
+        {
+          name: 'Step 3',
+          value:
+            'Have the Player 2 leave immediately after the rematch is requested by Player 1',
+          inline: false,
+        },
+        {
+          name: 'Step 4',
+          value: 'Player 2 who left, remove cards desired',
+          inline: false,
+        },
+        {
+          name: 'Step 5',
+          value:
+            "I don't really know what to do after, but yeah something about play again",
+          inline: false,
+        },
+        {
+          name: 'Step 6',
+          value: 'Boom. You got it. Woo. Repeat if necessary',
+          inline: false,
+        }
+      )
+      .setTimestamp();
+
+    this.channel.send(embed);
   };
 }
 
