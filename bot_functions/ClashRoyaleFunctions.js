@@ -454,29 +454,18 @@ class ClashRoyaleFunctions {
         {name: 'Step 1', value: 'Start a 2v2 normally', inline: false},
         {
           name: 'Step 2',
-          value: 'Have Player 1 request a rematch',
+          value: 'Have Player 1 request a rematch, then leave to remove cards',
           inline: false,
         },
         {
           name: 'Step 3',
           value:
-            'Have the Player 2 leave immediately after the rematch is requested by Player 1',
+            'Have the Player 2 accept the rematch after Player 1 is done removing cards',
           inline: false,
         },
         {
           name: 'Step 4',
-          value: 'Player 2 who left, remove cards desired',
-          inline: false,
-        },
-        {
-          name: 'Step 5',
-          value:
-            "I don't really know what to do after, but yeah something about play again",
-          inline: false,
-        },
-        {
-          name: 'Step 6',
-          value: 'Boom. You got it. Woo. Repeat if necessary',
+          value: 'Boom. You got it. Woo. Repeat steps if necessary',
           inline: false,
         }
       )
