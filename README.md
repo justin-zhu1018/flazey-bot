@@ -5,6 +5,8 @@ with game data instead of a constant list of commands). <br /> <br />
 
 ![image](https://user-images.githubusercontent.com/25803515/92157883-f14bfb80-eddf-11ea-8516-136f22e8bb95.png)
 
+UPDATE 9/7: Command on 2v2 glitch added and updated. `!glitch` discord command!
+
 # To use this repository
 Honestly, I have no idea. You can just try to clone this repository and if you have node.js/npm installed, you can use the `npm install` command to download all dependencies
 necessary.
