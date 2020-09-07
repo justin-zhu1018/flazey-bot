@@ -460,7 +460,7 @@ class ClashRoyaleFunctions {
         {
           name: 'Step 3',
           value:
-            'Have the Player 2 accept the rematch after Player 1 is done removing cards',
+            'Have Player 2 accept the rematch after Player 1 is done removing cards',
           inline: false,
         },
         {
