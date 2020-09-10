@@ -20,8 +20,8 @@
     "es6-promise": "^4.2.8",
     "express": "^4.17.1",
     "isomorphic-fetch": "^2.2.1",
-    "mongoose": "^5.10.2",
+    "mongoose": "^5.10.4",
     "morgan": "^1.10.0",
-    "node-fetch": "^2.6.0"
+    "node-fetch": "^2.6.1"
   }
 }
