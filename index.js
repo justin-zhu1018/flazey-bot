@@ -69,7 +69,7 @@ client.on('ready', () => {
       }
     )
     .setTimestamp();
-  botchannel.send(embed);
+  botChannel.send(embed);
 });
 
 client.on('message', (receivedMessage) => {
