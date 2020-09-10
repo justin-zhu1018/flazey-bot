@@ -36,21 +36,40 @@ client.on('ready', () => {
       console.log(` - ${channel.name} ${channel.type} ${channel.id}`);
     });
   });
-  let generalChannel = client.channels.cache.get('730295406189215747');
   let botChannel = client.channels.cache.get('730528385385889834');
+  let test = client.channels.cache.get('730511965092446361');
   //   const attachment = new Discord.MessageAttachment(
   //     "https://clashroyale.com/uploaded-images-blog/CR_facebook_share_02_180403_175322.jpg?mtime=20180403175322"
   //   );
-
-  // generalChannel.send("I am here! For a list of the commands, type !commands.");
-
-  // botChannel.send(
-  //   "I am here! List of commands: ```" +
-  //     "!commands\n" +
-  //     "!help\n" +
-  //     "!clan\n" +
-  //     "!player [player-tag] ```"
-  // );
+  const embed = new Discord.MessageEmbed()
+    .setColor('#E5A823')
+    .setTitle('Welcome!')
+    .setAuthor(
+      "Flazey's Welcome Thang",
+      'https://i.ytimg.com/vi/CCYCI9FINME/maxresdefault.jpg',
+      'https://github.com/justin-zhu1018/flazey-bot'
+    )
+    .setDescription("I am here! Here's some info to help get you started!")
+    .addFields(
+      {
+        name: '!commands',
+        value: 'To bring up the bot commands.',
+        inline: false,
+      },
+      {
+        name: 'To wake me up (after 30 mins of inactivity)',
+        value:
+          'https://flazey-bot.herokuapp.com/ Quick visit and I should be back in 30 seconds!',
+        inline: false,
+      },
+      {
+        name: 'My GitHub 😉',
+        value: 'https://github.com/justin-zhu1018/flazey-bot',
+        inline: false,
+      }
+    )
+    .setTimestamp();
+  botchannel.send(embed);
 });
 
 client.on('message', (receivedMessage) => {
