@@ -2,11 +2,7 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 const CLASH_ROYALE_API = require('clash-royale-api');
 const CLASH_ROYALE_FUNCTIONS = require('./bot_functions/ClashRoyaleFunctions');
-const {format} = require('morgan');
-
 var config, CR_API, DB_URL, cr_functions;
-
-//TODO: heroku addons:create newrelic:wayne --app flazey-bot to ping
 
 if (process.env.NODE_ENV === 'production') {
   //Used for Heroku
@@ -37,7 +33,6 @@ client.on('ready', () => {
     });
   });
   let botChannel = client.channels.cache.get('730528385385889834');
-  let test = client.channels.cache.get('730511965092446361');
   //   const attachment = new Discord.MessageAttachment(
   //     "https://clashroyale.com/uploaded-images-blog/CR_facebook_share_02_180403_175322.jpg?mtime=20180403175322"
   //   );
