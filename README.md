@@ -1,6 +1,6 @@
 # flazey-bot
 Welcome! This repository holds the Discord bot for my Clash Royale Community! Using the Clash Royale API, Discord API, and some Node.js, I was able to create a bot that fetches
-game data from the API with some commands. Below is the result of the `!commands` discord chat command. All other commands return in a similar structure (nice little embed, but 
+game data from the API with some commands. Below is the result of the `!commands` discord chat command. All other commands return in a similar structure (a pre-designed embed, but 
 with game data instead of a constant list of commands). <br /> 
 
 ## Bot Online Embed
