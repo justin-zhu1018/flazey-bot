@@ -33,9 +33,7 @@ client.on('ready', () => {
     });
   });
   let botChannel = client.channels.cache.get('730528385385889834');
-  //   const attachment = new Discord.MessageAttachment(
-  //     "https://clashroyale.com/uploaded-images-blog/CR_facebook_share_02_180403_175322.jpg?mtime=20180403175322"
-  //   );
+
   const embed = new Discord.MessageEmbed()
     .setColor('#E5A823')
     .setTitle('Welcome!')
