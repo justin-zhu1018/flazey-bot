@@ -32,37 +32,37 @@ client.on('ready', () => {
       console.log(` - ${channel.name} ${channel.type} ${channel.id}`);
     });
   });
-  let botChannel = client.channels.cache.get('730528385385889834');
+  // let botChannel = client.channels.cache.get('730528385385889834');
 
-  const embed = new Discord.MessageEmbed()
-    .setColor('#E5A823')
-    .setTitle('Welcome!')
-    .setAuthor(
-      "Flazey's Welcome Thang",
-      'https://i.ytimg.com/vi/CCYCI9FINME/maxresdefault.jpg',
-      'https://github.com/justin-zhu1018/flazey-bot'
-    )
-    .setDescription("I am here! Here's some info to help get you started!")
-    .addFields(
-      {
-        name: '!commands',
-        value: 'To bring up the bot commands.',
-        inline: false,
-      },
-      {
-        name: 'To wake me up (after 30 mins of inactivity)',
-        value:
-          'https://flazey-bot.herokuapp.com/ Quick visit and I should be back in 30 seconds!',
-        inline: false,
-      },
-      {
-        name: 'My GitHub 😉',
-        value: 'https://github.com/justin-zhu1018/flazey-bot',
-        inline: false,
-      }
-    )
-    .setTimestamp();
-  botChannel.send(embed);
+  // const embed = new Discord.MessageEmbed()
+  //   .setColor('#E5A823')
+  //   .setTitle('Welcome!')
+  //   .setAuthor(
+  //     "Flazey's Welcome Thang",
+  //     'https://i.ytimg.com/vi/CCYCI9FINME/maxresdefault.jpg',
+  //     'https://github.com/justin-zhu1018/flazey-bot'
+  //   )
+  //   .setDescription("I am here! Here's some info to help get you started!")
+  //   .addFields(
+  //     {
+  //       name: '!commands',
+  //       value: 'To bring up the bot commands.',
+  //       inline: false,
+  //     },
+  //     {
+  //       name: 'To wake me up (after 30 mins of inactivity)',
+  //       value:
+  //         'https://flazey-bot.herokuapp.com/ Quick visit and I should be back in 30 seconds!',
+  //       inline: false,
+  //     },
+  //     {
+  //       name: 'My GitHub 😉',
+  //       value: 'https://github.com/justin-zhu1018/flazey-bot',
+  //       inline: false,
+  //     }
+  //   )
+  //   .setTimestamp();
+  // botChannel.send(embed);
 });
 
 client.on('message', (receivedMessage) => {
