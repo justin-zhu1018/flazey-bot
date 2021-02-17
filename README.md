@@ -3,6 +3,9 @@ Welcome! This repository holds the Discord bot for my Clash Royale Community! Us
 game data from the API with some commands. Below is the result of the `!commands` discord chat command. All other commands return in a similar structure (a pre-designed embed, but 
 with game data instead of a constant list of commands). <br /> 
 
+## YouTube Link to Demo
+You can view a demo of all the functions with some explanations in the link provided here! https://youtu.be/Q85u1WLUfeI
+
 ## Bot Online Embed
 ![image](https://user-images.githubusercontent.com/25803515/92808737-d8f45780-f370-11ea-87c0-e39e2421aea1.png)
 
