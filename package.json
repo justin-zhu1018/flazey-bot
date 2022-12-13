@@ -18,7 +18,7 @@
     "concurrently": "^5.3.0",
     "discord.js": "^12.3.1",
     "es6-promise": "^4.2.8",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "isomorphic-fetch": "^2.2.1",
     "mongoose": "^5.10.4",
     "morgan": "^1.10.0",
